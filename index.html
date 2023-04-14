@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <title>Fish World</title>
+    <title>Major Selector</title>
     <meta charset="UTF-8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
     <style>
@@ -53,7 +53,7 @@
     <h3>We filter our dataset by major</h3>
     <div id="results" class="results"></div>
 
-    <script id="output-template" type="text/x-handlebars-template">
+    <script id="outputTemplate" type="text/x-handlebars-template">
         <table>
             <tr><th>Name</th><th>Major</th><th>Midterm</th><th>Final</th></tr>
             {{#each rows}}
@@ -73,7 +73,7 @@
 
                 var selectedMajors = data.filter((choice) => choice.major === chosenMajor);
 
-                var outputText = document.getElementById('output-template').innerHTML;
+                var outputText = document.getElementById('outputTemplate').innerHTML;
                 var compiledOutputText = Handlebars.compile(outputText);
                 document.getElementById('results').innerHTML = compiledOutputText({rows: selectedMajors});
             }
