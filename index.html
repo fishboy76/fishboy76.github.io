@@ -3,6 +3,7 @@
 <head>
     <title>Fish World</title>
     <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
     <style>
         body {
             background: rgb(0, 0, 50);
@@ -26,18 +27,60 @@
         }
 
         table {
-            width: 50%
+            margin: 0 auto;
+            padding-top: 1%;
+            width: 30%;
+            border-collapse: collapse;
+        }
+
+        table tr td {
+            padding: 7px;
+            text-align: center;
+            width: 20%;
+            border: solid 1px;
+        }
+
+        th {
+            padding: 5px;
+            border: solid 1px;
         }
     </style>
 </head>
 <body>
     <h1>Select a Major</h1>
-    <button name="citMajors" id="citMajors">CIT Majors</button>
-    <button name="businessMajors" id="businessMajors">Business Majors</button>
+    <button name="citMajors" id="citMajors" onclick="getData('CIT')">CIT Majors</button>
+    <button name="businessMajors" id="businessMajors" onclick="getData('BUS')">Business Majors</button>
     <h3>We filter our dataset by major</h3>
-    <div id="results"></div>
-    <script>
+    <div id="results" class="results"></div>
 
+    <script id="output-template" type="text/x-handlebars-template">
+        <table>
+            <tr><th>Name</th><th>Major</th><th>Midterm</th><th>Final</th></tr>
+            {{#each rows}}
+                <tr>
+                    <td>{{name}}</td><td>{{major}}</td><td>{{midterm}}</td><td>{{final}}</td>
+                </tr>
+            {{/each}}
+        </table>
+    </script>
+
+    <script>
+        async function getData(chosenMajor) {
+            var url = "cit5students.json";
+            var response = await fetch(url);
+            if (response.ok) {
+                var data = await response.json();
+
+                var selectedMajors = data.filter((choice) => choice.major === chosenMajor);
+
+                var outputText = document.getElementById('output-template').innerHTML;
+                var compiledOutputText = Handlebars.compile(outputText);
+                document.getElementById('results').innerHTML = compiledOutputText({rows: selectedMajors});
+            }
+            else {
+                document.querySelector('#results').innerHTML = "Error";
+            }
+        }
     </script>
 </body>
 </html>
